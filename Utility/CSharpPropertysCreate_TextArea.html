@@ -1,0 +1,51 @@
+<body bgcolor="#000000">
+<font color="#cccccc">don't forget extend</font>
+<font color="#ff0000">"System.ComponentModel.INotifyPropertyChanged"</font></br>
+<textarea id="output_textarea" style="font-weight: normal; font-size: 8pt; overflow: autoscroll; width: 580px; color: #000000; font-style: normal; font-family: Verdana; height: 300px; background-color: #cccccc; font-variant: normal; border: #bbbbbb 1px solid;" >
+</textarea><br>
+<input type="text" value="a,b,c"  id="propertys"/>
+<input type="submit" value="Submit"  onclick="OnClick()"/>
+<script type="text/javascript"> 
+	
+	var propertyNames = ["Stock_Security","Stock_SecurityName","Stock_TradingPrice"];
+	
+	var propertHeader = 
+	    '#region INotifyPropertyChanged Members\
+        \npublic event PropertyChangedEventHandler PropertyChanged;\
+        \nprivate void onPropertyChanged(object sender, string propertyName)\
+        \n{\
+        \n    if (this.PropertyChanged != null)\
+        \n   { PropertyChanged(sender, new PropertyChangedEventArgs(propertyName)); }\
+        \n}\
+        \n#endregion\
+		\npublic object RowTitle { get; set; }\n\n';
+	
+	var structStrTmp=
+		'private string _REPLACE_ITEM;\
+		 \npublic string REPLACE_ITEM\
+         \n{\
+		 \n	get { return _REPLACE_ITEM; }\
+		 \n	set\
+		 \n	{\
+		 \n		if(_REPLACE_ITEM != value)\
+		 \n		{\
+		 \n			_REPLACE_ITEM = value;\
+		 \n			onPropertyChanged(this, "REPLACE_ITEM");\
+		 \n		}\
+		 \n	}\
+         \n}\
+		 \n';
+	
+   //         window.onload=function(){  
+   function OnClick(){     
+		propertyNames = document.getElementById('propertys').value.split(',');	
+		var output = document.getElementById('output_textarea');  	
+		output.value=propertHeader;
+		
+		for(var i = 0; i < propertyNames.length;i++){
+				var structStr = structStrTmp.replace(/REPLACE_ITEM/gi,propertyNames[i])
+				output.value += structStr;			   
+		}	
+    };  
+	</script>
+	</body>
